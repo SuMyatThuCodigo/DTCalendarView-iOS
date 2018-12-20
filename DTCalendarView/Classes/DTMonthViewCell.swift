@@ -27,7 +27,7 @@ class DTMonthViewCell: UICollectionViewCell {
         super.layoutSubviews()
         
         if let userContentView = userContentView {
-            userContentView.frame = CGRect(x: 0, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
+            userContentView.frame = CGRect(x: 24, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
         }
     }
 }

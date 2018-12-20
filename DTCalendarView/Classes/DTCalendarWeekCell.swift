@@ -74,7 +74,7 @@ class DTCalendarWeekCell: UICollectionViewCell {
         let width = contentView.bounds.width
         let height = contentView.bounds.height
         
-        let widthAvailablePerDay = floor((width - 40) / CGFloat(dayViews.count))
+        let widthAvailablePerDay = floor((width - 10) / CGFloat(dayViews.count))
         let leftOverWidth = width - 40 - (widthAvailablePerDay * CGFloat(dayViews.count))
         let leadingExtra = floor(leftOverWidth / 2)
         let trailingExtra = leftOverWidth - leadingExtra
@@ -87,7 +87,7 @@ class DTCalendarWeekCell: UICollectionViewCell {
         
         for (index, dayView) in dayViews.enumerated() {
             
-            dayView.frame = CGRect(x: 20 + leadingExtra + (CGFloat(index) * widthAvailablePerDay), y: 0, width: widthAvailablePerDay, height: height)
+            dayView.frame = CGRect(x: 20 + leadingExtra + (CGFloat(index) * widthAvailablePerDay), y: 0, width: widthAvailablePerDay, height: height) //20 +
         }
         
         super.layoutSubviews()
@@ -110,7 +110,7 @@ class DTCalendarWeekCell: UICollectionViewCell {
         }
     }
     
-    func dayViewTapped(_ tapGR: UITapGestureRecognizer) {
+    @objc func dayViewTapped(_ tapGR: UITapGestureRecognizer) {
         
         if let dayLabel = tapGR.view as? DTCalendarDayView,
             tapGR.state == .recognized {

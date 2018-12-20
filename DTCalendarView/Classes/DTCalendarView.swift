@@ -446,7 +446,7 @@ public class DTCalendarView: UIView {
         collectionView.register(DTWeekdayViewCell.self, forCellWithReuseIdentifier: "WeekDayViewCell")
         collectionView.register(DTCalendarWeekCell.self, forCellWithReuseIdentifier: "WeekViewCell")
         
-        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        collectionView.decelerationRate = UIScrollView.DecelerationRate.fast
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -455,7 +455,7 @@ public class DTCalendarView: UIView {
         collectionView.addGestureRecognizer(datePanGR!)
     }
     
-    func viewPanned(_ panGR: UIPanGestureRecognizer) {
+    @objc func viewPanned(_ panGR: UIPanGestureRecognizer) {
         
         let point = panGR.location(in: collectionView)
         
@@ -541,7 +541,7 @@ extension DTCalendarView: UICollectionViewDataSource {
         if previewDaysInPreviousAndMonth {
             /// If showing days outside the current month
             /// The month section always has 8 rows - 6 for the weeks, one for the month/year view, and one for the day of week labels
-            return 8
+            return 7
         } else {
             var count = 8
             
@@ -590,17 +590,28 @@ extension DTCalendarView: UICollectionViewDataSource {
                 monthCell.userContentView = userMonthView
             }
             return cell
-        } else if indexPath.item == 1 {
-            /// Cell for the week day labels
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekDayViewCell", for: indexPath)
-            
-            if let weekdayViewCell = cell as? DTWeekdayViewCell {
-                weekdayViewCell.setDisplayAttributes(weekdayDisplayAttributes)
-                weekdayViewCell.setWeekdayLabels(weekdayLabels)
-            }
-            
-            return cell
-        } else {
+        }
+//        else if indexPath.item == 1 {
+//            /// Cell for the week day labels
+////            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekDayViewCell", for: indexPath)
+////
+////            if let weekdayViewCell = cell as? DTWeekdayViewCell {
+////                weekdayViewCell.setDisplayAttributes(weekdayDisplayAttributes)
+////                weekdayViewCell.setWeekdayLabels(weekdayLabels)
+////            }
+////
+////            return cell
+//
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MonthViewCell", for: indexPath)
+//            let calendar = Calendar.current
+//            if let date = calendar.date(byAdding: .month, value: indexPath.section, to: displayStartDate),
+//                let monthCell = cell as? DTMonthViewCell {
+//                let userMonthView = delegate?.calendarView(self, viewForMonth: date)
+//                monthCell.userContentView = userMonthView
+//            }
+//            return cell
+//        }
+        else {
             /// Cell for a week
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier:  "WeekViewCell", for: indexPath)
             
@@ -620,7 +631,7 @@ extension DTCalendarView: UICollectionViewDataSource {
                     
                 let indexOfLastDayOfWeekInFirstWeek = 6
                 
-                var displayWeek = indexPath.item - 1
+                var displayWeek = indexPath.item //- 1
                 
                 /// If we aren't showing days outside the current month
                 /// And the first week was drop we need to shift the display week up by 1
@@ -641,6 +652,8 @@ extension DTCalendarView: UICollectionViewDataSource {
                 weekViewCell.disabledDays = delegate?.calendarView(self, disabledDaysInMonth: date)
                 
                 weekViewCell.updateCalendarLabels(weekDisplayAttributes: weekDisplayAttributes)
+                
+                
             }
             
             return cell
@@ -655,9 +668,12 @@ extension DTCalendarView: UICollectionViewDelegateFlowLayout {
         var height: CGFloat = 0
         if indexPath.item == 0 {
             height = delegate?.calendarViewHeightForMonthView(self) ?? 60
-        } else if indexPath.item == 1 {
-            height = delegate?.calendarViewHeightForWeekdayLabelRow(self) ?? 50
-        } else {
+        }
+//        else if indexPath.item == 1 {
+////            height = delegate?.calendarViewHeightForWeekdayLabelRow(self) ?? 50
+//            height = delegate?.calendarViewHeightForMonthView(self) ?? 60
+//        }
+        else {
             height = delegate?.calendarViewHeightForWeekRows(self) ?? 40
         }
         
