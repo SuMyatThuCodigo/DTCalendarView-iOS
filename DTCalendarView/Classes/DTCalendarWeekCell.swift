@@ -74,7 +74,7 @@ class DTCalendarWeekCell: UICollectionViewCell {
         let width = contentView.bounds.width
         let height = contentView.bounds.height
         
-        let widthAvailablePerDay = floor((width - 10) / CGFloat(dayViews.count))
+        let widthAvailablePerDay = floor((width - 15) / CGFloat(dayViews.count))
         let leftOverWidth = width - 40 - (widthAvailablePerDay * CGFloat(dayViews.count))
         let leadingExtra = floor(leftOverWidth / 2)
         let trailingExtra = leftOverWidth - leadingExtra
