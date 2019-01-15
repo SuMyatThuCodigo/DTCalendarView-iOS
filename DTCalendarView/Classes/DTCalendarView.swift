@@ -543,37 +543,38 @@ extension DTCalendarView: UICollectionViewDataSource {
             /// The month section always has 8 rows - 6 for the weeks, one for the month/year view, and one for the day of week labels
             return 7
         } else {
-            var count = 8
             
-            /// If not we need to determine if the month will fit in less than 6 displayed weeks
-            /// If so determine if this falls at the end or beginning of the month (or both Feb 2015!)
-            /// And subtract that week out of the total count
-            let calendar = Calendar.current
-            if let date = calendar.date(byAdding: .month, value: section, to: displayStartDate),
-                let range = calendar.range(of: .day, in: .month, for: date),
-                var weekday = calendar.dateComponents([.weekday], from: date).weekday {
+                var count = 7
                 
-                if mondayShouldBeTheFirstDayOfTheWeek {
-                    weekday = ((weekday + 5) % 7) + 1
+                /// If not we need to determine if the month will fit in less than 6 displayed weeks
+                /// If so determine if this falls at the end or beginning of the month (or both Feb 2015!)
+                /// And subtract that week out of the total count
+                let calendar = Calendar.current
+                if let date = calendar.date(byAdding: .month, value: section, to: displayStartDate),
+                    let range = calendar.range(of: .day, in: .month, for: date),
+                    var weekday = calendar.dateComponents([.weekday], from: date).weekday {
+                    
+                    if mondayShouldBeTheFirstDayOfTheWeek {
+                        weekday = ((weekday + 5) % 7) + 1
+                    }
+                    
+                    if weekday == 1 {
+                        weekday = 8
+                    }
+                    
+                    let indexOfLastDayOfWeekInFirstWeek = 6
+                    let indexOfFirstDayOfWeekInLastWeek = 35
+                    
+                    if indexOfLastDayOfWeekInFirstWeek < weekday - 1 {
+                        count -= 1
+                    }
+                    
+                    if indexOfFirstDayOfWeekInLastWeek >= (range.count + weekday - 1) {
+                        count -= 1
+                    }
                 }
                 
-                if weekday == 1 {
-                    weekday = 8
-                }
-                
-                let indexOfLastDayOfWeekInFirstWeek = 6
-                let indexOfFirstDayOfWeekInLastWeek = 35
-                
-                if indexOfLastDayOfWeekInFirstWeek < weekday - 1 {
-                    count -= 1
-                }
-                
-                if indexOfFirstDayOfWeekInLastWeek >= (range.count + weekday - 1) {
-                    count -= 1
-                }
-            }
-            
-            return count
+                return count
         }
     }
     
